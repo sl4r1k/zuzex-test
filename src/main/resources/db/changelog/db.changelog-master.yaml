@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/create-users.yaml
   - include:
       file: db/changelog/create-houses.yaml
+  - include:
+      file: db/changelog/add-house-id-to-users.yaml
