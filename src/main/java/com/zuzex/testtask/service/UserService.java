@@ -2,12 +2,14 @@ package com.zuzex.testtask.service;
 
 import com.zuzex.testtask.entity.User;
 import com.zuzex.testtask.repository.UserRepository;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository repository;
 
     public UserService(UserRepository repository) {
@@ -48,5 +50,10 @@ public class UserService {
 
     public List<User> getByIds(List<Long> ids) {
         return this.repository.findAllById(ids);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        return this.getByName(username).orElseThrow(EntityNotFoundException::new);
     }
 }
