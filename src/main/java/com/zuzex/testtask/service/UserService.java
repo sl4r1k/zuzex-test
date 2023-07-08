@@ -41,4 +41,12 @@ public class UserService {
     public List<User> getAll() {
         return this.repository.findAll();
     }
+
+    public Optional<User> getByName(String name) {
+        return this.repository.findByName(name);
+    }
+
+    public List<User> getByIds(List<Long> ids) {
+        return this.repository.findAllById(ids);
+    }
 }
