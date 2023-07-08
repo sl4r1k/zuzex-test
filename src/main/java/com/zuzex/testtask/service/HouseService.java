@@ -4,15 +4,19 @@ import com.zuzex.testtask.entity.House;
 import com.zuzex.testtask.entity.User;
 import com.zuzex.testtask.repository.HouseRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class HouseService {
     private final HouseRepository repository;
+    private final UserService userService;
 
-    public HouseService(HouseRepository repository) {
+    public HouseService(HouseRepository repository, UserService userService) {
         this.repository = repository;
+        this.userService = userService;
     }
 
     public House add(House house) {
@@ -34,11 +38,15 @@ public class HouseService {
         return this.add(house);
     }
 
-    public House populateUsersInHouse(House house, User host, List<User> users) {
+    @Transactional
+    public House populateUsersInHouse(Long houseId, List<Long> occupantIds, String hostName) {
+        House house = this.repository.findById(houseId).orElseThrow(EntityNotFoundException::new);
+        User host = this.userService.getByName(hostName).orElseThrow(EntityNotFoundException::new);
         if (!house.getHost().equals(host)) {
-            throw new RuntimeException("Only the host can populate users into his house");
+            throw new RuntimeException("Only the host can populate users in his house");
         }
-        house.getOccupants().addAll(users);
+        List<User> occupants = this.userService.getByIds(occupantIds);
+        house.getOccupants().addAll(occupants);
         return this.repository.save(house);
     }
 
