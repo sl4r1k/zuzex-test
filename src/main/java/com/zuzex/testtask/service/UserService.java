@@ -19,7 +19,7 @@ public class UserService {
     }
 
     public User edit(User user) {
-        if (user.getId() != null && this.repository.findById(user.getId()).isPresent()) {
+        if (user.getId() == null || this.repository.findById(user.getId()).isEmpty()) {
             throw new RuntimeException(
                 String.format(
                     "User with id %s not found",
