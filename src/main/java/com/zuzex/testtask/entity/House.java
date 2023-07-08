@@ -3,7 +3,7 @@ package com.zuzex.testtask.entity;
 import lombok.*;
 import org.hibernate.Hibernate;
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "houses")
@@ -24,6 +24,11 @@ public class House {
     @MapsId
     @ToString.Exclude
     private User host;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "house_id")
+    @ToString.Exclude
+    private List<User> occupants = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
