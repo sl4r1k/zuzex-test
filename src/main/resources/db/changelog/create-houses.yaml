@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: sl4r1k
+      comment: "create houses"
+      changes:
+        - createTable:
+            tableName: houses
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: address
+                  type: varchar(50)
+              - column:
+                  name: host_id
+                  type: bigint
+        - addForeignKeyConstraint:
+            constraintName: fk_house_users
+            baseColumnNames: host_id
+            baseTableName: houses
+            referencedColumnNames: id
+            referencedTableName: users
