@@ -1,5 +1,6 @@
 package com.zuzex.testtask.entity;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import lombok.*;
 import org.hibernate.Hibernate;
 import javax.persistence.*;
@@ -23,11 +24,13 @@ public class House {
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @ToString.Exclude
+    @JsonIncludeProperties({"id"})
     private User host;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "house_id")
     @ToString.Exclude
+    @JsonIncludeProperties({"id"})
     private List<User> occupants = new ArrayList<>();
 
     @Override
