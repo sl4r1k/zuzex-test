@@ -22,7 +22,6 @@ public class House {
     private String address;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
     @ToString.Exclude
     @JsonIncludeProperties({"id"})
     private User host;

@@ -3,6 +3,7 @@ package com.zuzex.testtask.service;
 import com.zuzex.testtask.entity.User;
 import com.zuzex.testtask.repository.UserRepository;
 import org.springframework.security.core.userdetails.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -11,12 +12,15 @@ import java.util.Optional;
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User add(User user) {
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()).toCharArray());
         return this.repository.save(user);
     }
 

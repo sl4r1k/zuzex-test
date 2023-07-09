@@ -53,13 +53,7 @@ public class HouseController {
 
     @PostMapping("/{id}/occupants")
     public ResponseEntity<House> populateUsers(@PathVariable Long id, @RequestBody List<Long> occupantIds, Principal principal) {
-        String hostName = null;
-//        if (principal instanceof UserDetails) {
-//            hostName = ((UserDetails) principal).getUsername();
-//        } else {
-//            hostName = principal.toString();
-//        }
-        return ResponseEntity.ok(this.service.populateUsersInHouse(id, occupantIds, hostName));
+        return ResponseEntity.ok(this.service.populateUsersInHouse(id, occupantIds, principal.getName()));
     }
 
     @DeleteMapping("/{id}")
@@ -75,6 +69,7 @@ public class HouseController {
 
     @GetMapping
     public ResponseEntity<List<House>> getAll() {
-        return ResponseEntity.ok(this.service.getAll());
+        List<House> all = this.service.getAll();
+        return ResponseEntity.ok(all);
     }
 }

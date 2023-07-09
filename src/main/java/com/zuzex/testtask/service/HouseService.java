@@ -42,7 +42,7 @@ public class HouseService {
     public House populateUsersInHouse(Long houseId, List<Long> occupantIds, String hostName) {
         House house = this.repository.findById(houseId).orElseThrow(EntityNotFoundException::new);
         User host = this.userService.getByName(hostName).orElseThrow(EntityNotFoundException::new);
-        if (!house.getHost().equals(host)) {
+        if (!house.getHost().getId().equals(host.getId())) {
             throw new RuntimeException("Only the host can populate users in his house");
         }
         List<User> occupants = this.userService.getByIds(occupantIds);
